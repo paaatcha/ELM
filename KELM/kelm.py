@@ -16,13 +16,30 @@ If you find some bug, please e-mail me =)
 
 import numpy as np
 import sys
-
-# Insert the utils path
-sys.path.insert (0, '/home/patcha/Dropbox/Doutorado/Codigos/machine-learning/machine-learning/utils/')
-
-
-from utils import sigmoid, cont_error
 from sklearn.metrics.pairwise import rbf_kernel, polynomial_kernel, sigmoid_kernel
+
+# Function to transform the data to one hot enconding
+def one_hot_encoding(ind, N=None):
+    ind = np.asarray(ind)
+    if ind is None:
+        return None
+    
+    if N is None:
+        N = ind.max() + 1
+    return (np.arange(N) == ind[:,None]).astype(int)
+
+# Function to cont the errors
+def contError (vreal, vclass):
+      # Getting the matrix binarized
+      vclass = one_hot_encoding (vclass)
+      [m,n] = vreal.shape
+      #dif = vreal - vclass
+      err = abs(vreal - vclass).sum()
+      return int(err/2)
+
+# Function to compute the sigmoid
+def sigmoid (v):
+    return 1/(1+np.exp(-v))
 
 
 class KELM:
