@@ -23,16 +23,33 @@ If you find some bug, please e-mail me =)
 import numpy as np
 import sys
 
-# Insert the util's path
-sys.path.insert (0, '/home/patcha/Dropbox/Doutorado/Codigos/Python/utils/')
-sys.path.insert (0, '/home/patcha/Dropbox/Doutorado/Codigos/Python/RBM/')
-#sys.path.insert (0, '/home/labcin/Dropbox/Codigos/Python/utils/')
-#sys.path.insert (0, '/home/labcin/Dropbox/Codigos/Python/RBM/')
-
-
-from utilsClassification import sigmoid, cont_error
-from sklearn.decomposition import PCA
+# Insert the path to the RBM implementation
+sys.path.insert (0, '../RBM/')
 from rbm import RBM
+from sklearn.decomposition import PCA
+
+# Function to transform the data to one hot enconding
+def one_hot_encoding(ind, N=None):
+    ind = np.asarray(ind)
+    if ind is None:
+        return None
+    
+    if N is None:
+        N = ind.max() + 1
+    return (np.arange(N) == ind[:,None]).astype(int)
+
+# Function to cont the errors
+def contError (vreal, vclass):
+      # Getting the matrix binarized
+      vclass = one_hot_encoding (vclass)
+      [m,n] = vreal.shape
+      #dif = vreal - vclass
+      err = abs(vreal - vclass).sum()
+      return int(err/2)
+
+# Function to compute the sigmoid
+def sigmoid (v):
+    return 1/(1+np.exp(-v))
 
 
 class ELM:
